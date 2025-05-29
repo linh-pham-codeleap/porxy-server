@@ -14,12 +14,6 @@ app.use(express.raw({
     limit: '10mb' 
 }));
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-
 // Main proxy handler
 app.use('/request', (req, res, next) => {
     // Skip if this is exactly '/request' without additional path
@@ -86,14 +80,6 @@ app.use('/request', (req, res, next) => {
             console.log('Error Response Body:', error.response.data);
             
             res.status(error.response.status);
-            
-            // Forward error response headers
-            Object.entries(error.response.headers).forEach(([key, value]) => {
-                if (!['transfer-encoding', 'connection', 'keep-alive', 'content-encoding'].includes(key.toLowerCase())) {
-                    res.set(key, value);
-                }
-            });
-            
             res.send(error.response.data);
         } else if (error.request) {
             // Request was made but no response received
