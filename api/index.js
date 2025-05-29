@@ -32,8 +32,8 @@ app.use('/request', (req, res, next) => {
         }
         
         // Require full URL with protocol
-        if (!targetPath.startsWith('http://') && !targetPath.startsWith('https://')) {
-            return res.status(400).json({ error: 'Target URL must include http:// or https:// protocol' });
+        if (!targetPath.startsWith('http') && !targetPath.startsWith('https')) {
+            return res.status(400).json({ error: 'Target URL must include http or https protocol' });
         }
         
         const targetUrl = targetPath;
